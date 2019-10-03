@@ -116,10 +116,10 @@ class Client extends \yii\db\ActiveRecord
 
     public function uploadLogo(): bool
     {
-        if ($this->logo_file === null) {
+        if (!$this->isNewRecord && $this->logo_file === null) {
             return true;
         }
-        if ($this->validate()) {
+        if ($this->logo_file instanceof UploadedFile && $this->validate()) {
             \yii\helpers\FileHelper::createDirectory('uploads');
             $fileName = md5($this->logo_file->baseName) . '.' . $this->logo_file->extension;
             move_uploaded_file($this->logo_file->tempName, 'uploads/' . $fileName);
