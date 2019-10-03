@@ -47,11 +47,11 @@ class Client extends \yii\db\ActiveRecord
             [['vat', 'city_id', 'logo_id'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 128],
-            [['phone'], 'string', 'max' => 11],
             [['phone'], 'unique'],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
             [['logo_id'], 'exist', 'skipOnError' => true, 'targetClass' => Logo::className(), 'targetAttribute' => ['logo_id' => 'id']],
             [['logo_file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['phone'], \kartik\validators\PhoneValidator::class, 'countryValue' => 'RU']
         ];
     }
 
@@ -105,6 +105,7 @@ class Client extends \yii\db\ActiveRecord
             return false;
         }
 
+        $this->phone = preg_replace('/\D/', '', $this->phone);
         $currentDateAndTime = (new \DateTime())->format('Y-m-d H:i:s');
         if ($this->isNewRecord) {
             $this->created_at = $currentDateAndTime;

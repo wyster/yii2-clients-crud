@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
 <div class="client-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data'], 'enableClientValidation' => true]); ?>
 
     <?= $form->field($model, 'created_at')->textInput(['disabled' => true]) ?>
 
@@ -21,7 +21,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::class, [
+        'mask' => '+7 (999) 999 99 99',
+    ]) ?>
 
     <?= $form->field($model, 'vat')->textInput() ?>
 
