@@ -42,7 +42,7 @@ class Client extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'phone', 'city_id', 'description'], 'required'],
+            [['name', 'phone', 'city_id'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['vat', 'city_id', 'logo_id'], 'integer'],
             [['description'], 'string'],
@@ -130,9 +130,8 @@ class Client extends \yii\db\ActiveRecord
             $logo->save();
             $this->logo_file = null;
             $this->logo_id = $logo->id;
-            return true;
         }
 
-        return false;
+        return true;
     }
 }

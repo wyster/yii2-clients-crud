@@ -48,8 +48,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'logo_file')->fileInput() ?>
 
-    <div class="form-group field-client-logo_file">
-        <label class="control-label" for="client-logo_file"><?=Yii::t('app', 'Current logo');?></label>
+    <div class="form-group ">
+        <label class="control-label"><?=Yii::t('app', 'Current logo');?></label>
     <?php
     if ($model->logo instanceof \app\models\Logo) {
         echo '<div><img src="'. $model->logo->getSrc() . '"/></div>';
