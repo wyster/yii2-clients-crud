@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'phone',
             'vat',
-            'city_id',
+            'city.NameWithRegion',
             'description:ntext',
             'logo_id',
         ],
