@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
         'mask' => '+7 (999) 999 99 99',
     ]) ?>
 
-    <?= $form->field($model, 'vat')->textInput() ?>
+    <?= $form->field($model, 'vat')->checkbox() ?>
 
     <?php
     echo $form->field($model, 'city_id')->widget(Select2::class, [
