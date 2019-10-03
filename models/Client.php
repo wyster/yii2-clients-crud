@@ -8,15 +8,16 @@ use Yii;
  * This is the model class for table "client".
  *
  * @property int $id
- * @property int $created_at
- * @property int $updated_at
+ * @property string $created_at
+ * @property string $updated_at
  * @property string $name
  * @property string $phone
  * @property int $vat
- * @property int $city
+ * @property int $city_id
  * @property string $description
  * @property int $logo_id
- * @property int $status
+ *
+ * @property City $city
  */
 class Client extends \yii\db\ActiveRecord
 {
@@ -34,10 +35,14 @@ class Client extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'phone', 'city', 'description', 'logo_id'], 'required'],
-            [['vat', 'city', 'logo_id', 'status'], 'integer'],
+            [['created_at', 'name', 'phone', 'city_id', 'description', 'logo_id'], 'required'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['vat', 'city_id', 'logo_id'], 'integer'],
             [['description'], 'string'],
-            [['name', 'phone'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 128],
+            [['phone'], 'string', 'max' => 11],
+            [['phone'], 'unique'],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
         ];
     }
 
@@ -47,17 +52,33 @@ class Client extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'name' => 'Name',
-            'phone' => 'Phone',
-            'vat' => 'Vat',
-            'city' => 'City',
-            'description' => 'Description',
-            'logo_id' => 'Logo ID',
-            'status' => 'Status',
+            'id' => Yii::t('app', 'ID'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'name' => Yii::t('app', 'Name'),
+            'phone' => Yii::t('app', 'Phone'),
+            'vat' => Yii::t('app', 'Vat'),
+            'city_id' => Yii::t('app', 'City ID'),
+            'description' => Yii::t('app', 'Description'),
+            'logo_id' => Yii::t('app', 'Logo ID'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return ClientQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new ClientQuery(get_called_class());
     }
 
     public function beforeSave($insert): bool
@@ -66,7 +87,7 @@ class Client extends \yii\db\ActiveRecord
             return false;
         }
 
-        $currentDateAndTime = -(new \DateTime())->format('Y-m-d H:i:s');
+        $currentDateAndTime = (new \DateTime())->format('Y-m-d H:i:s');
         if ($this->isNewRecord) {
             $this->created_at = $currentDateAndTime;
         }

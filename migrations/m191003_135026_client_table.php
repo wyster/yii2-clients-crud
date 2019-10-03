@@ -12,11 +12,11 @@ class m191003_135026_client_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('client', [
+        $this->createTable('{{%client%}}', [
             'id' => $this->primaryKey(),
             'created_at' => $this->dateTime()->notNull(),
             'updated_at' => $this->dateTime()->null(),
-            'name' => $this->string()->notNull(),
+            'name' => $this->string(128)->notNull(),
             'phone' => $this->string(11)->notNull()->unique(),
             'vat' => $this->tinyInteger()->notNull()->defaultValue(0),
             'city_id' => $this->integer()->notNull(),

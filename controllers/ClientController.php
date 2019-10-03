@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\City;
 use Yii;
 use app\models\Client;
 use app\models\ClientSearch;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -123,5 +125,22 @@ class ClientController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionCityList($q = null): array
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if ($q !== null) {
+            $data = City::find()->search($q);
+            $out['results'] = [];
+            foreach ($data as $item) {
+                $out['results'][] = [
+                    'id' => $item->id,
+                    'text' => $item->getNameWithRegion()
+                ];
+            }
+        }
+        return $out;
     }
 }
