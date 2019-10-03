@@ -20,23 +20,6 @@ class m191003_191550_client_table_foreign_key extends Migration
      */
     public function safeDown()
     {
-        echo "m191003_191550_client_table_foreign_key cannot be reverted.\n";
-
-        return false;
+        $this->dropForeignKey('city', '{{%client%}}');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m191003_191550_client_table_foreign_key cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

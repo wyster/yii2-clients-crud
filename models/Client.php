@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile as UploadedFile;
 
 /**
  * This is the model class for table "client".
@@ -18,9 +19,15 @@ use Yii;
  * @property int $logo_id
  *
  * @property City $city
+ * @property Logo $logo
  */
 class Client extends \yii\db\ActiveRecord
 {
+    /**
+     * @var UploadedFile
+     */
+    public $logo_file;
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +42,7 @@ class Client extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'phone', 'city_id', 'description', 'logo_id'], 'required'],
+            [['name', 'phone', 'city_id', 'description'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['vat', 'city_id', 'logo_id'], 'integer'],
             [['description'], 'string'],
@@ -43,6 +50,8 @@ class Client extends \yii\db\ActiveRecord
             [['phone'], 'string', 'max' => 11],
             [['phone'], 'unique'],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
+            [['logo_id'], 'exist', 'skipOnError' => true, 'targetClass' => Logo::className(), 'targetAttribute' => ['logo_id' => 'id']],
+            [['logo_file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -61,6 +70,7 @@ class Client extends \yii\db\ActiveRecord
             'city_id' => Yii::t('app', 'City ID'),
             'description' => Yii::t('app', 'Description'),
             'logo_id' => Yii::t('app', 'Logo ID'),
+            'logo_file' => Yii::t('app', 'Logo'),
         ];
     }
 
@@ -70,6 +80,14 @@ class Client extends \yii\db\ActiveRecord
     public function getCity()
     {
         return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLogo()
+    {
+        return $this->hasOne(Logo::className(), ['id' => 'logo_id']);
     }
 
     /**
@@ -94,5 +112,27 @@ class Client extends \yii\db\ActiveRecord
         $this->updated_at = $currentDateAndTime;
 
         return true;
+    }
+
+    public function uploadLogo(): bool
+    {
+        if ($this->logo_file === null) {
+            return true;
+        }
+        if ($this->validate()) {
+            \yii\helpers\FileHelper::createDirectory('uploads');
+            $fileName = md5($this->logo_file->baseName) . '.' . $this->logo_file->extension;
+            move_uploaded_file($this->logo_file->tempName, 'uploads/' . $fileName);
+            $logo = new Logo();
+            $logo->name = $fileName;
+            $logo->size = $this->logo_file->size;
+            $logo->created_at = (new \DateTime())->format('Y-m-d H:i:s');
+            $logo->save();
+            $this->logo_file = null;
+            $this->logo_id = $logo->id;
+            return true;
+        }
+
+        return false;
     }
 }

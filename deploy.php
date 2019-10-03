@@ -16,10 +16,14 @@ set('git_tty', true);
 set('shared_files', [
     'config/db.php'
 ]);
-add('shared_dirs', []);
+add('shared_dirs', [
+    'web/uploads'
+]);
 
 // Writable dirs by web server 
-add('writable_dirs', []);
+add('writable_dirs', [
+    'web/uploads'
+]);
 set('allow_anonymous_stats', false);
 
 // Hosts

@@ -35,8 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'vat',
             'city.NameWithRegion',
             'description:ntext',
-            'logo_id',
-
+            [
+                'attribute'=>'logo.src',
+                'format' => ['image', ['style' => 'max-height:100px']],
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

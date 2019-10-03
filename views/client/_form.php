@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
 <div class="client-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'created_at')->textInput(['disabled' => true]) ?>
 
@@ -46,7 +46,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'logo_id')->textInput() ?>
+    <?= $form->field($model, 'logo_file')->fileInput() ?>
+
+    <div class="form-group field-client-logo_file">
+        <label class="control-label" for="client-logo_file"><?=Yii::t('app', 'Current logo');?></label>
+    <?php
+    if ($model->logo instanceof \app\models\Logo) {
+        echo '<div><img src="'. $model->logo->getSrc() . '"/></div>';
+    }
+    ?>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

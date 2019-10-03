@@ -37,7 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'vat',
             'city.NameWithRegion',
             'description:ntext',
-            'logo_id',
+            [
+                'attribute'=>'logo',
+                'value' => $model->logo->getSrc(),
+                'format' => ['image', ['style' => 'max-height:100px']],
+            ]
         ],
     ]) ?>
 
