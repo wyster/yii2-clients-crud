@@ -44,7 +44,7 @@ class ClientController extends Controller
 
         $searchFilterCities = [];
         $clientSearch = Yii::$app->request->get('ClientSearch');
-        if (array_key_exists('city_id', $clientSearch)) {
+        if (is_array($clientSearch) && array_key_exists('city_id', $clientSearch)) {
             $city = City::find()->getById((int)$clientSearch['city_id']);
             if ($city instanceof City) {
                 $searchFilterCities[$city->id] = $city->getNameWithRegion();
