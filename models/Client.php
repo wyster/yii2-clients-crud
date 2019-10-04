@@ -107,9 +107,15 @@ class Client extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
-    public function beforeDelete()
+    public function afterDelete(): bool
     {
-        return parent::beforeDelete();
+        parent::afterDelete();
+
+        if ($this->logo instanceof Logo) {
+            $this->logo->delete();
+        }
+
+        return true;
     }
 
     public function beforeSave($insert): bool
@@ -117,6 +123,8 @@ class Client extends \yii\db\ActiveRecord
         if (!parent::beforeSave($insert)) {
             return false;
         }
+
+        $this->uploadLogo(UploadedFile::getInstance($this, 'logo_file'));
 
         $this->phone = $this->preparePhone($this->phone);
         $currentDateAndTime = (new \DateTime())->format('Y-m-d H:i:s');
@@ -128,25 +136,14 @@ class Client extends \yii\db\ActiveRecord
         return true;
     }
 
-    public function uploadLogo(): bool
+    public function uploadLogo(?UploadedFile $file): void
     {
-        if (!$this->isNewRecord && $this->logo_file === null) {
-            return true;
-        }
-        if ($this->logo_file instanceof UploadedFile && $this->validate()) {
-            \yii\helpers\FileHelper::createDirectory('uploads');
-            $fileName = md5($this->logo_file->baseName) . '.' . $this->logo_file->extension;
-            move_uploaded_file($this->logo_file->tempName, 'uploads/' . $fileName);
-            $logo = new Logo();
-            $logo->name = $fileName;
-            $logo->size = $this->logo_file->size;
-            $logo->created_at = (new \DateTime())->format('Y-m-d H:i:s');
-            $logo->save();
-            $this->logo_file = null;
-            $this->logo_id = $logo->id;
+        if (!$file instanceof UploadedFile) {
+            return;
         }
 
-        return true;
+        $logo = (new Logo())->uploadNewLogo($file);
+        $this->logo_id = $logo->id;
     }
 
     /**
@@ -161,12 +158,10 @@ class Client extends \yii\db\ActiveRecord
     public function deleteLogo(): bool
     {
         if ($this->logo instanceof Logo) {
-            if (\yii\helpers\FileHelper::unlink('uploads/' . $this->logo->name)) {
-                $logo = $this->logo;
-                $this->logo_id = null;
-                $this->update();
-                $logo->delete();
-            }
+            $logo = $this->logo;
+            $this->logo_id = null;
+            $this->update();
+            $logo->delete();
         }
 
         return true;

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "logo".
@@ -14,6 +15,8 @@ use Yii;
  */
 class Logo extends \yii\db\ActiveRecord
 {
+    private const UPLOAD_DIR = 'uploads';
+
     /**
      * {@inheritdoc}
      */
@@ -59,6 +62,43 @@ class Logo extends \yii\db\ActiveRecord
 
     public function getSrc(): string
     {
-        return '/uploads/' . $this->name;
+        return '/' . self::UPLOAD_DIR  .'/' . $this->name;
+    }
+
+    public function beforeDelete(): bool
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        $filePath = self::UPLOAD_DIR . DIRECTORY_SEPARATOR . $this->name;
+        if (file_exists($filePath)) {
+            \yii\helpers\FileHelper::unlink($filePath);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @return Logo
+     * @throws \Exception
+     */
+    public function uploadNewLogo(UploadedFile $file): Logo
+    {
+        \yii\helpers\FileHelper::createDirectory(self::UPLOAD_DIR);
+        $fileName = md5($file->baseName) . '.' . $file->extension;
+        move_uploaded_file(
+            $file->tempName,
+            self::UPLOAD_DIR . DIRECTORY_SEPARATOR .  $fileName
+        );
+
+        $logo = new Logo();
+        $logo->name = $fileName;
+        $logo->size = $file->size;
+        $logo->created_at = (new \DateTime())->format('Y-m-d H:i:s');
+        $logo->save();
+
+        return $logo;
     }
 }
