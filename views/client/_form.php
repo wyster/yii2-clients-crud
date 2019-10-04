@@ -52,9 +52,10 @@ use yii\widgets\ActiveForm;
 
     <?php if ($model->logo instanceof \app\models\Logo): ?>
     <div class="form-group ">
-        <label class="control-label"><?=Yii::t('app', 'Current logo');?></label>
-        echo '<div><img src="'. $model->logo->getSrc() . '"/></div>';
-    }
+        <label class="control-label btn-block"><?=Yii::t('app', 'Current logo');?></label>
+        <a href="<?=$model->logo->getSrc();?>" target="_blank" title="Открыть оригинал">
+            <img src="<?=$model->logo->getSrc();?>" style="max-height: 200px"/>
+        </a>
     </div>
     <?php endif; ?>
 

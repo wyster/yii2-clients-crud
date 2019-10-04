@@ -1,7 +1,9 @@
 <?php
 
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\web\JsExpression;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ClientSearch */
@@ -34,8 +36,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'phone',
             'vat',
             [
-                'attribute' => 'city.NameWithRegion',
+                'attribute' => 'city_id',
                 'label' => Yii::t('app','City'),
+                'value' => function(\app\models\Client $model) {
+                    return $model->city->getNameWithRegion();
+                },
+                'filter' => Select2::widget([
+                    'data' => $searchFilterCities,
+                    'model' => $searchModel,
+                    'attribute' => 'city_id',
+                    'options' => ['placeholder' => Yii::t('app', 'Search for a city...')],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'minimumInputLength' => 1,
+                        'language' => [
+                            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+                        ],
+                        'ajax' => [
+                            'url' => \yii\helpers\Url::to(['city-list']),
+                            'dataType' => 'json',
+                            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                        ]
+                    ],
+
+                ]),
             ],
             'description:ntext',
             [

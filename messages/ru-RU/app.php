@@ -11,5 +11,5 @@ return [
     'Phone' => 'Телефон',
     'Updated At' => 'Обновлен',
     'Created At' => 'Создан',
-    'Current Logo' => 'Текущий логотип'
+    'Current logo' => 'Текущий логотип'
 ];
