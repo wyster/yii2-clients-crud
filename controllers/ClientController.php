@@ -161,4 +161,16 @@ class ClientController extends Controller
         }
         return $out;
     }
+
+    public function actionDeleteLogo(int $id): \yii\web\Response
+    {
+        $model = Client::find()->getById($id);
+
+        if (!$model instanceof Client) {
+            throw new \InvalidArgumentException('User not found');
+        }
+        $model->deleteLogo();
+
+        return $this->redirect(['view', 'id' => $model->id]);
+    }
 }
