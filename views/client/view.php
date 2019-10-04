@@ -34,7 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
             'name',
             'phone',
-            'vat',
+            [
+                'attribute' => 'var',
+                'value' => function(\app\models\Client $model) {
+                    return $model->vat ? 'Да' : 'Нет';
+                }
+            ],
             [
                 'attribute' => 'city.NameWithRegion',
                 'label' => Yii::t('app','City'),
