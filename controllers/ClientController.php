@@ -23,14 +23,28 @@ class ClientController extends Controller
      */
     public function behaviors()
     {
-        return [
+        $result = [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
             ],
         ];
+
+        if (\Yii::$app->params['http_base_auth_pass']) {
+            $result['basicAuth'] = [
+                'class' => \yii\filters\auth\HttpBasicAuth::class,
+                'auth' => function ($username, $password) {
+                    if ($password === \Yii::$app->params['http_base_auth_pass']) {
+                        return new \app\models\User();
+                    }
+                    return null;
+                },
+            ];
+        }
+
+        return $result;
     }
 
     /**
