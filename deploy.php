@@ -14,7 +14,8 @@ set('git_tty', true);
 
 // Shared files/dirs between deploys
 set('shared_files', [
-    'config/db.php'
+    'config/db.php',
+    'config/params.php'
 ]);
 add('shared_dirs', [
     'web/uploads'
