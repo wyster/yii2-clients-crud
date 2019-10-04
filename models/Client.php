@@ -99,13 +99,18 @@ class Client extends \yii\db\ActiveRecord
         return new ClientQuery(get_called_class());
     }
 
+    public function beforeValidate(): bool
+    {
+        $this->phone = preg_replace('/\D/', '', $this->phone);
+        return parent::beforeValidate();
+    }
+
     public function beforeSave($insert): bool
     {
         if (!parent::beforeSave($insert)) {
             return false;
         }
 
-        $this->phone = preg_replace('/\D/', '', $this->phone);
         $currentDateAndTime = (new \DateTime())->format('Y-m-d H:i:s');
         if ($this->isNewRecord) {
             $this->created_at = $currentDateAndTime;
