@@ -22,13 +22,13 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::class, [
-        'mask' => '+7 (999) 999 99 99',
+        'mask' => '+[7] (999) 999 99 99',
     ]) ?>
 
     <?= $form->field($model, 'vat')->checkbox() ?>
 
     <?php
-    echo $form->field($model, 'city_id')->widget(Select2::class, [
+    echo $form->field($model, 'city_id')->label(Yii::t('app','City'))->widget(Select2::class, [
         'initValueText' => $model->city instanceof \app\models\City ? $model->city->getNameWithRegion() : '',
         'options' => ['placeholder' => Yii::t('app', 'Search for a city...')],
         'pluginOptions' => [
@@ -50,14 +50,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'logo_file')->fileInput() ?>
 
+    <?php if ($model->logo instanceof \app\models\Logo): ?>
     <div class="form-group ">
-        <label class="control-label"><?=Yii::t('app', 'Current logo');?></label>
-    <?php
-    if ($model->logo instanceof \app\models\Logo) {
-        echo '<div><img src="'. $model->logo->getSrc() . '"/></div>';
-    }
-    ?>
+        <label class="control-label btn-block"><?=Yii::t('app', 'Current logo');?></label>
+        <a href="<?=$model->logo->getSrc();?>" target="_blank" title="Открыть оригинал">
+            <img src="<?=$model->logo->getSrc();?>" style="max-height: 200px"/>
+        </a>
     </div>
+    <?php endif; ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

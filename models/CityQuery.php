@@ -42,4 +42,13 @@ class CityQuery extends \yii\db\ActiveQuery
                 ->limit(20)
                 ->all();
     }
+
+    /**
+     * @param int $id
+     * @return null|City
+     */
+    public function getById(int $id): ?City
+    {
+        return $this->where(['id' => $id])->one();
+    }
 }

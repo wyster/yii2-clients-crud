@@ -34,13 +34,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
             'name',
             'phone',
-            'vat',
-            'city.NameWithRegion',
+            [
+                'attribute' => 'vat',
+                'value' => function(\app\models\Client $model) {
+                    return $model->vat ? 'Да' : 'Нет';
+                }
+            ],
+            [
+                'attribute' => 'city.NameWithRegion',
+                'label' => Yii::t('app','City'),
+            ],
             'description:ntext',
             [
-                'attribute'=>'logo.src',
+                'attribute' => 'logo.src',
+                'label' => Yii::t('app','Logo'),
                 'format' => ['image', ['style' => 'max-height:100px']],
-            ]
+            ],
         ],
     ]) ?>
 

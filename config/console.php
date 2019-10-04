@@ -42,13 +42,14 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
-    /*
     'controllerMap' => [
-        'fixture' => [ // Fixture generation command line.
+        'fixture' => [
             'class' => 'yii\faker\FixtureController',
+            'providers' => [
+                'app\tests\unit\faker\providers\PhoneNumber',
+            ],
         ],
     ],
-    */
 ];
 
 if (YII_ENV_DEV) {

@@ -2,5 +2,14 @@
 
 return [
     'Clients' => 'Клиенты',
-    'Create Client' => 'Создать клиента'
+    'Create Client' => 'Создать клиента',
+    'Name' => 'Название',
+    'Vat' => 'НДС',
+    'City' => 'Город',
+    'Description' => 'Описание',
+    'Logo' => 'Логотип',
+    'Phone' => 'Телефон',
+    'Updated At' => 'Обновлен',
+    'Created At' => 'Создан',
+    'Current logo' => 'Текущий логотип'
 ];

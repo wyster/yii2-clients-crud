@@ -11,6 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use function array_key_exists;
 
 /**
  * ClientController implements the CRUD actions for Client model.
@@ -41,9 +42,19 @@ class ClientController extends Controller
         $searchModel = new ClientSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $searchFilterCities = [];
+        $clientSearch = Yii::$app->request->get('ClientSearch');
+        if (is_array($clientSearch) && array_key_exists('city_id', $clientSearch)) {
+            $city = City::find()->getById((int)$clientSearch['city_id']);
+            if ($city instanceof City) {
+                $searchFilterCities[$city->id] = $city->getNameWithRegion();
+            }
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'searchFilterCities' => $searchFilterCities
         ]);
     }
 
