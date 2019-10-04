@@ -27,6 +27,16 @@ $config = [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'logFile' => '@runtime/logs/profile.log',
+                    'logVars' => [],
+                    'levels' => ['profile'],
+                    'categories' => ['yii\db\Command::query', 'yii\db\Command::execute'],
+                    'prefix' => function($message) {
+                        return '';
+                    }
+                ]
             ],
         ],
         'db' => $db,
