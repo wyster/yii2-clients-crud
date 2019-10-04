@@ -33,7 +33,7 @@ $config = [
                     'logVars' => [],
                     'levels' => ['profile'],
                     'categories' => ['yii\db\Command::query', 'yii\db\Command::execute'],
-                    'prefix' => function($message) {
+                    'prefix' => function ($message) {
                         return '';
                     }
                 ]

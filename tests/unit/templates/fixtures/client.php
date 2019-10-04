@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\ArrayHelper;
+
 // users.php file under the template path (by default @tests/unit/templates/fixtures)
 /**
  * @var $faker \Faker\Generator

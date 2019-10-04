@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'vat')->checkbox() ?>
 
     <?php
-    echo $form->field($model, 'city_id')->label(Yii::t('app','City'))->widget(Select2::class, [
+    echo $form->field($model, 'city_id')->label(Yii::t('app', 'City'))->widget(Select2::class, [
         'initValueText' => $model->city instanceof \app\models\City ? $model->city->getNameWithRegion() : '',
         'options' => ['placeholder' => Yii::t('app', 'Search for a city...')],
         'pluginOptions' => [
