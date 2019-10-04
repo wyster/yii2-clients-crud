@@ -38,7 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'vat',
                 'value' => function(\app\models\Client $model) {
                     return $model->vat ? 'Да' : 'Нет';
-                }
+                },
+                'filter' => Select2::widget([
+                    'data' => [0 => 'Нет', 1 => 'Да'],
+                    'model' => $searchModel,
+                    'attribute' => 'vat',
+                    'hideSearch' => true
+                ])
             ],
             [
                 'attribute' => 'city_id',
