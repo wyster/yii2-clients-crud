@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\web\JsExpression;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ClientSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -21,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'phone',
             [
                 'attribute' => 'vat',
-                'value' => function(\app\models\Client $model) {
+                'value' => function (\app\models\Client $model) {
                     return $model->vat ? 'Да' : 'Нет';
                 },
                 'filter' => Select2::widget([
@@ -48,8 +49,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'city_id',
-                'label' => Yii::t('app','City'),
-                'value' => function(\app\models\Client $model) {
+                'label' => Yii::t('app', 'City'),
+                'value' => function (\app\models\Client $model) {
                     return $model->city->getNameWithRegion();
                 },
                 'filter' => Select2::widget([
@@ -75,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             [
                 'attribute' => 'logo.src',
-                'label' => Yii::t('app','Logo'),
+                'label' => Yii::t('app', 'Logo'),
                 'format' => ['image', ['style' => 'max-height:100px']],
             ],
             ['class' => 'yii\grid\ActionColumn'],

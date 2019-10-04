@@ -36,18 +36,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'phone',
             [
                 'attribute' => 'vat',
-                'value' => function(\app\models\Client $model) {
+                'value' => function (\app\models\Client $model) {
                     return $model->vat ? 'Да' : 'Нет';
                 }
             ],
             [
                 'attribute' => 'city.NameWithRegion',
-                'label' => Yii::t('app','City'),
+                'label' => Yii::t('app', 'City'),
             ],
             'description:ntext',
             [
                 'attribute' => 'logo.src',
-                'label' => Yii::t('app','Logo'),
+                'label' => Yii::t('app', 'Logo'),
                 'format' => ['image', ['style' => 'max-height:100px']],
             ],
         ],

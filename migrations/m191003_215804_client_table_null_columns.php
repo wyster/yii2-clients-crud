@@ -14,7 +14,7 @@ class m191003_215804_client_table_null_columns extends Migration
     {
         $this->alterColumn('{{%client%}}', 'logo_id', $this->integer()->null());
         $this->alterColumn('{{%client%}}', 'vat', $this->tinyInteger()->null());
-        $this->alterColumn('{{%client%}}', 'description',  $this->text()->null());
+        $this->alterColumn('{{%client%}}', 'description', $this->text()->null());
     }
 
     /**

@@ -28,13 +28,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'phone') ?>
 
-    <?php // echo $form->field($model, 'vat') ?>
+    <?php // echo $form->field($model, 'vat')?>
 
-    <?php // echo $form->field($model, 'city_id') ?>
+    <?php // echo $form->field($model, 'city_id')?>
 
-    <?php // echo $form->field($model, 'description') ?>
+    <?php // echo $form->field($model, 'description')?>
 
-    <?php // echo $form->field($model, 'logo_id') ?>
+    <?php // echo $form->field($model, 'logo_id')?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
