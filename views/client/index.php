@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'phone',
             [
-                'attribute' => 'var',
+                'attribute' => 'vat',
                 'value' => function(\app\models\Client $model) {
                     return $model->vat ? 'Да' : 'Нет';
                 }
