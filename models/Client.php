@@ -101,7 +101,9 @@ class Client extends \yii\db\ActiveRecord
 
     public function beforeValidate(): bool
     {
-        $this->phone = preg_replace('/\D/', '', $this->phone);
+        if ($this->phone) {
+            $this->phone = $this->preparePhone($this->phone);
+        }
         return parent::beforeValidate();
     }
 
@@ -111,6 +113,7 @@ class Client extends \yii\db\ActiveRecord
             return false;
         }
 
+        $this->phone = $this->preparePhone($this->phone);
         $currentDateAndTime = (new \DateTime())->format('Y-m-d H:i:s');
         if ($this->isNewRecord) {
             $this->created_at = $currentDateAndTime;
@@ -139,5 +142,14 @@ class Client extends \yii\db\ActiveRecord
         }
 
         return true;
+    }
+
+    /**
+     * @param string $phone
+     * @return string
+     */
+    private function preparePhone(string $phone): string
+    {
+        return preg_replace('/\D/', '', $phone);
     }
 }
