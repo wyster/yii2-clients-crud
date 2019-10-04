@@ -107,6 +107,11 @@ class Client extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
+    public function beforeDelete()
+    {
+        return parent::beforeDelete();
+    }
+
     public function beforeSave($insert): bool
     {
         if (!parent::beforeSave($insert)) {
@@ -151,5 +156,19 @@ class Client extends \yii\db\ActiveRecord
     private function preparePhone(string $phone): string
     {
         return preg_replace('/\D/', '', $phone);
+    }
+
+    public function deleteLogo(): bool
+    {
+        if ($this->logo instanceof Logo) {
+            if (\yii\helpers\FileHelper::unlink('uploads/' . $this->logo->name)) {
+                $logo = $this->logo;
+                $this->logo_id = null;
+                $this->update();
+                $logo->delete();
+            }
+        }
+
+        return true;
     }
 }

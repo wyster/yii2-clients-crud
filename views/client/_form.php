@@ -56,6 +56,8 @@ use yii\widgets\ActiveForm;
         <a href="<?=$model->logo->getSrc();?>" target="_blank" title="Открыть оригинал">
             <img src="<?=$model->logo->getSrc();?>" style="max-height: 200px"/>
         </a>
+        <br />
+        <a href="/client/delete-logo/?id=<?=$model->id;?>">Удалить</a>
     </div>
     <?php endif; ?>
 

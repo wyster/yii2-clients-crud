@@ -31,4 +31,13 @@ class ClientQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * @param int $id
+     * @return null|Client
+     */
+    public function getById(int $id): ?Client
+    {
+        return $this->where(['id' => $id])->one();
+    }
 }
